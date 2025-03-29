@@ -1,0 +1,32 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches:
+      - main  # Nebo jakákoliv jiná větev, na které chcete testy spouštět
+  pull_request:
+    branches:
+      - main  # Nebo jiná větev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Můžete zvolit jiný operační systém, například `windows-latest` nebo `macos-latest`
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9  # Zvolte verzi Pythonu, kterou používáte ve vašem projektu
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright pytest
+          python -m playwright install  # Tato příkaz instaluje prohlížeče potřebné pro Playwright
+
+      - name: Run Playwright tests
+        run: |
+          pytest path/to/your/test_file.py  # Cesta k vašim testům
